@@ -1,0 +1,36 @@
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+
+public class DES_CBC {
+    public static void main(String[] args) throws Exception {
+        String msg = "HELLOWORLD";
+
+        // Generate DES key
+        SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+
+        // Create IV (8 bytes for DES)
+        IvParameterSpec iv = new IvParameterSpec("12345678".getBytes());
+
+        // Encrypt
+        Cipher enc = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        enc.init(Cipher.ENCRYPT_MODE, key, iv);
+        byte[] encrypted = enc.doFinal(msg.getBytes());
+
+        // Decrypt
+        Cipher dec = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        dec.init(Cipher.DECRYPT_MODE, key, iv);
+        byte[] decrypted = dec.doFinal(encrypted);
+
+        System.out.println("Original : " + msg);
+        System.out.println("Encrypted: " + bytesToHex(encrypted));
+        System.out.println("Decrypted: " + new String(decrypted));
+    }
+
+    static String bytesToHex(byte[] b){
+        StringBuilder sb = new StringBuilder();
+        for(byte by : b) sb.append(String.format("%02X", by));
+        return sb.toString();
+    }
+}
