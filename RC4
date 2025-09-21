@@ -1,0 +1,42 @@
+public class RC4Simple {
+    
+    static byte[] RC4(byte[] key, byte[] msg) {
+        // 1. Initialize S array
+        int[] S = new int[256];
+        for(int i = 0; i < 256; i++) S[i] = i;
+        
+        // 2. Key Scheduling Algorithm (KSA)
+        int j = 0;
+        for(int i = 0; i < 256; i++) {
+            j = (j + S[i] + key[i % key.length]) % 256;
+            int temp = S[i]; S[i] = S[j]; S[j] = temp;
+        }
+        
+        // 3. Pseudo-random Generation Algorithm (PRGA)
+        byte[] out = new byte[msg.length];
+        int i = 0; j = 0;
+        for(int n = 0; n < msg.length; n++) {
+            i = (i + 1) % 256;
+            j = (j + S[i]) % 256;
+            int temp = S[i]; S[i] = S[j]; S[j] = temp;
+            int K = S[(S[i] + S[j]) % 256];
+            out[n] = (byte)(msg[n] ^ K);
+        }
+        return out;
+    }
+    
+    public static void main(String[] args) {
+        String message = "HELLO";
+        byte[] key = "KEY".getBytes();
+        
+        // Encrypt
+        byte[] cipher = RC4(key, message.getBytes());
+        // Decrypt (same function)
+        byte[] decrypted = RC4(key, cipher);
+        
+        System.out.println("Original : " + message);
+        System.out.print("Encrypted: ");
+        for(byte b : cipher) System.out.printf("%02X ", b);
+        System.out.println("\nDecrypted: " + new String(decrypted));
+    }
+}
