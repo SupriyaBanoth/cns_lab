@@ -1,0 +1,31 @@
+import java.math.BigInteger;
+
+public class SimpleRSA {
+
+    public static void main(String[] args) {
+        // 1. Choose two primes
+        BigInteger p = new BigInteger("61");
+        BigInteger q = new BigInteger("53");
+        BigInteger n = p.multiply(q);               // n = p*q
+        BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+
+        // 2. Choose e (public exponent)
+        BigInteger e = new BigInteger("17");       // 1 < e < phi and gcd(e,phi)=1
+
+        // 3. Compute d (private exponent)
+        BigInteger d = e.modInverse(phi);
+
+        // 4. Message to encrypt
+        BigInteger msg = new BigInteger("65");     // message as number
+
+        // 5. Encrypt: c = m^e mod n
+        BigInteger cipher = msg.modPow(e, n);
+
+        // 6. Decrypt: m = c^d mod n
+        BigInteger decrypted = cipher.modPow(d, n);
+
+        System.out.println("Original Message : " + msg);
+        System.out.println("Encrypted Message: " + cipher);
+        System.out.println("Decrypted Message: " + decrypted);
+    }
+}
