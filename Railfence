@@ -1,0 +1,41 @@
+public class RailFenceCipher {
+    static String encrypt(String txt,int key){
+        StringBuilder res=new StringBuilder();
+        for(int k=0;k<key;k++){        // loop over each rail
+            int i=k, step1=(key-k-1)*2, step2=k*2;
+            boolean flag=true;
+            while(i<txt.length()){
+                res.append(txt.charAt(i));
+                if(step1==0) i+=step2;
+                else if(step2==0) i+=step1;
+                else { i+= flag? step1: step2; flag=!flag; }
+            }
+        }
+        return res.toString();
+    }
+
+    static String decrypt(String txt,int key){
+        char[] res=new char[txt.length()];
+        int idx=0;
+        for(int k=0;k<key;k++){
+            int i=k, step1=(key-k-1)*2, step2=k*2;
+            boolean flag=true;
+            while(i<txt.length()){
+                res[i]=txt.charAt(idx++);
+                if(step1==0) i+=step2;
+                else if(step2==0) i+=step1;
+                else { i+= flag? step1: step2; flag=!flag; }
+            }
+        }
+        return new String(res);
+    }
+
+    public static void main(String[] args){
+        String msg="NETWORK";
+        String enc=encrypt(msg,3);
+        String dec=decrypt(enc,3);
+        System.out.println("Original : "+msg);
+        System.out.println("Encrypted: "+enc);
+        System.out.println("Decrypted: "+dec);
+    }
+}
