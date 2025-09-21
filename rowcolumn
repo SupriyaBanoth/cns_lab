@@ -1,0 +1,28 @@
+public class RowColumnCipher {
+    static String encrypt(String txt, int r, int c){
+        txt=txt.toUpperCase().replaceAll("[^A-Z]","");
+        while(txt.length()<r*c) txt+="X";
+        String res="";
+        for(int j=0;j<c;j++)
+            for(int i=0;i<r;i++)
+                res += txt.charAt(i*c+j); // directly compute index
+        return res;
+    }
+
+    static String decrypt(String txt, int r, int c){
+        String res="";
+        for(int i=0;i<r;i++)
+            for(int j=0;j<c;j++)
+                res += txt.charAt(j*r + i); // reverse index
+        return res;
+    }
+
+    public static void main(String[] args){
+        String msg="WINDOW";
+        String enc=encrypt(msg,2,3);
+        String dec=decrypt(enc,2,3);
+        System.out.println("Original : "+msg);
+        System.out.println("Encrypted: "+enc);
+        System.out.println("Decrypted: "+dec);
+    }
+}
