@@ -1,8 +1,9 @@
 import javax.crypto.*;
 import javax.crypto.spec.*;
+import java.security.*;
 import java.util.*;
 
-public class AES_CBC {
+public class Main {
     public static void main(String[] a) throws Exception {
         var keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(128);
