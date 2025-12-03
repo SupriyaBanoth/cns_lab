@@ -1,32 +1,15 @@
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-
-public class SimpleDES {
-    public static void main(String[] args) throws Exception {
-        String msg = "HELLOWORLD";
-        
-        // Generate DES key
-        SecretKey key = KeyGenerator.getInstance("DES").generateKey();
-        
-        // Encrypt
-        Cipher enc = Cipher.getInstance("DES/ECB/PKCS5Padding");
-        enc.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encrypted = enc.doFinal(msg.getBytes());
-        
-        // Decrypt
-        Cipher dec = Cipher.getInstance("DES/ECB/PKCS5Padding");
-        dec.init(Cipher.DECRYPT_MODE, key);
-        byte[] decrypted = dec.doFinal(encrypted);
-        
-        System.out.println("Original : " + msg);
-        System.out.println("Encrypted: " + bytesToHex(encrypted));
-        System.out.println("Decrypted: " + new String(decrypted));
-    }
-    
-    static String bytesToHex(byte[] b){
-        StringBuilder sb = new StringBuilder();
-        for(byte by : b) sb.append(String.format("%02X", by));
-        return sb.toString();
-    }
+import javax.crypto.*;
+import java.util.*;
+public class DES {
+  public static void main(String[] a) throws Exception {
+    var k = KeyGenerator.getInstance("DES").generateKey();
+    var c = Cipher.getInstance("DES");
+    String t = "HelloWorld";
+    c.init(Cipher.ENCRYPT_MODE, k);
+    var e = c.doFinal(t.getBytes());
+    c.init(Cipher.DECRYPT_MODE, k);
+    var d = c.doFinal(e);
+    System.out.println("Enc: " + Base64.getEncoder().encodeToString(e));
+    System.out.println("Dec: " + new String(d));
+  }
 }
